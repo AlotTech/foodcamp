@@ -1,0 +1,311 @@
+-- --------------------------------------------------------
+-- Host:                         localhost
+-- Server version:               10.2.3-MariaDB-log - mariadb.org binary distribution
+-- Server OS:                    Win32
+-- HeidiSQL Version:             9.4.0.5125
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Dumping database structure for alot
+CREATE DATABASE IF NOT EXISTS `foodcamp` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `foodcamp`;
+
+-- Dumping structure for table alot.detail_kuliner
+CREATE TABLE IF NOT EXISTS `detail_kuliner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `kuliner_id` int(11) NOT NULL,
+  `resep` text DEFAULT NULL,
+  `foto` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_detail_makanan_makanan1_idx` (`kuliner_id`),
+  CONSTRAINT `fk_detail_kuliner_kuliner` FOREIGN KEY (`kuliner_id`) REFERENCES `kuliner` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.detail_kuliner: ~2 rows (approximately)
+/*!40000 ALTER TABLE `detail_kuliner` DISABLE KEYS */;
+
+
+-- Dumping structure for table alot.etnis
+CREATE TABLE IF NOT EXISTS `etnis` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `provinsi_id` int(11) NOT NULL,
+  `nama` varchar(45) NOT NULL,
+  `kode` varchar(10) DEFAULT NULL,
+  `lokasi` varchar(45) DEFAULT NULL,
+  `detail` text DEFAULT NULL,
+  `foto` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_etnis_provinsi1_idx` (`provinsi_id`),
+  CONSTRAINT `fk_etnis_provinsi1` FOREIGN KEY (`provinsi_id`) REFERENCES `provinsi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+-- Dumping structure for table alot.jam_buka
+CREATE TABLE IF NOT EXISTS `jam_buka` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `store_id` int(11) NOT NULL,
+  `hari` int(1) DEFAULT NULL,
+  `jam_buka` time DEFAULT NULL,
+  `jam_tutup` time DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_jam_buka_store1` (`store_id`),
+  CONSTRAINT `fk_jam_buka_store1` FOREIGN KEY (`store_id`) REFERENCES `store` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.jam_buka: ~2 rows (approximately)
+/*!40000 ALTER TABLE `jam_buka` DISABLE KEYS */;
+INSERT INTO `jam_buka` (`id`, `store_id`, `hari`, `jam_buka`, `jam_tutup`) VALUES
+	(10, 11, 2, '09:30:00', '23:00:00'),
+	(11, 11, 3, '10:00:00', '22:00:00');
+/*!40000 ALTER TABLE `jam_buka` ENABLE KEYS */;
+
+-- Dumping structure for table alot.kuliner
+CREATE TABLE IF NOT EXISTS `kuliner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `nama` varchar(45) DEFAULT NULL,
+  `etnis_id` int(11) NOT NULL,
+  `jenis_kuliner` varchar(1) DEFAULT NULL,
+  `st_halal` int(1) DEFAULT NULL,
+  `detail` text DEFAULT NULL,
+  `aktif` int(1) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `fk_makanan_etnis_idx` (`etnis_id`),
+  KEY `fk_kuliner_user1_idx` (`user_id`),
+  CONSTRAINT `fk_kuliner_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_makanan_daerah` FOREIGN KEY (`etnis_id`) REFERENCES `etnis` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.kuliner: ~16 rows (approximately)
+/*!40000 ALTER TABLE `kuliner` DISABLE KEYS */;
+INSERT INTO `kuliner` (`id`, `user_id`, `nama`, `etnis_id`, `jenis_kuliner`, `st_halal`, `detail`, `aktif`) VALUES
+	(1, 1, 'Tempoyak', 4, '1', 1, 'Masakan yang berasal dari buah durian yang difermentasi. Tempoyak, Bawang merah, Cabe merah, Gula pasir, Garam, Tomat merah, Minyak goreng, Teri basah (optional). Palembang, Sumatera, Kalimantan.', 1),
+	(2, 1, 'Kasuami', 12, '1', 1, 'Panganan ini dibuat dari kaopi (ubi kayu/ketela pohon/ ubi kayu) dikukus dan dibuat seperti tumpeng mini. Kaopi/Singkong. Sulawesi Tenggara (Buton, Muna, Wakatobi).', 1),
+	(3, 1, 'Burasa', 13, '1', 1, 'Panganan ini biasa dikenal juga dengan lapat atau lontong bersantan. Kenapa burasa karena dimaknai dengan beras ada rasa. Beras, daun salam, santan kelapa, garam, daun pisang, dan tali untuk pengikat. Sulawesi Selatan.', 1),
+	(4, 1, 'Sop Kaledo', 14, '1', 1, 'Sop kaki lembu donggala. Menjadi sajian kehormatan pada kala itu hingga saat ini. Daging lembu donggala dan tulang kaki, cabai, asam jawa, serai, jahe, garam, jeruk nipis, dan penyedap rasa. Palu, Sulawesi Tengah.', 1),
+	(5, 1, 'Pepes Pendap', 15, '1', 1, 'Salah satu makanan favorit Ir. Soekarno ketika beliau berkunjung ke bengkulu. Ikan pendap, cabai, bawang, lengkuas, kunyit, asam, kemiri, ketumbar, bumbu rempah, dan parutan kelapa. Bengkulu', 1),
+	(6, 1, 'Nasi Grombyang', 16, '1', 1, 'Nasi campur dengan irisan daging kerbau dan kuah lebih banyak sehingga kelihatan bergoyang-goyang (dalam bahasa jawa grombyang-grombyang). Daging sanding lamur, iga sapi, serai, daun salam, garam, gula merah, daun bawang, dan bumbu rempah. Jawa Tengah.', 1),
+	(7, 1, 'Sate Ulat Sagu', 17, '3', 1, 'Termasuk jenis makanan ekstrim, jika kita belum pernah mencicipinya. Makanan ini memberikan energid an kolesterol yang rendah. Ulat sagu ini berasal dari pohon agu yang dibiarkan membusuk, lalu ulat sagu pun muncul. Ulat sagu, tusukan sate, sambal kecap, sambal kacang, dan acar. Papua', 1),
+	(8, 1, 'Sate Matang', 1, '3', 1, 'Sate Matang ini tidak hanya disajikan dengan bumbu kacang saja, namun juga selalu disajikan bersama dengan nasi dan kuah soto. Dalam kuah soto tersebut biasanya juga berisi potongan kentang dan daging sehingga terasa lebih gurih. Ketumbar, bawang merah, bawang putih, batang serai, jahe, lengkuas, kunyit, kemiri, garam, gula merah, dan minyak goreng. Aceh.', 1),
+	(9, 1, 'Natinombur', 2, '1', 2, 'Ikan bakar yang disajikan dengan kuah kental penuh bumbu. ikan mas, perasan jeruk, garam, bumbu rempah. Tapanuli.', 1),
+	(10, 1, 'Dendeng Batokok', 3, '1', 1, 'Dibuat dari irisan tipis dan lebar daging sapi yang dikeringkan lalu digoreng kering. bumbu baladonya bukan memakai cabai merah, namun memakai cabai hijau yang diiris kasar dan daging sapi setelah diiris tipis melebar lalu dipukul-pukul dengan batu cobek supaya dagingnya menjadi lembut. Daging sapi, asam jawa, daun kunyit, daun jeruk, daun salam, kunyit, lengkuas, bawang putih, garam, gula merah, bumbu rempah. Padang, Sumatera Barat. Padang, Sumatera Barat.', 1),
+	(11, 1, 'Pempek', 4, '3', 1, 'Cita rasanya yang khas, dengan tekstur yang kenyal dan rasanya yang gurih dan saus cuko yang khas menambah cita rasa yang lezat. ikan tenggiri, tepung sagu, telur, garam, air, gula merah, asam jawa, cuka putih, timun, mie kuning. Sumatera selatan.', 1),
+	(12, 1, 'Kerak Telor', 6, '1', 1, 'dimasak dengan tanpa minyak goreng, dimasak dengan wajan normal yang dibalik 180 derajat, dengan dibakar menggunakan bara. beras ketan putih, telur ayam, ebi, bawang goreng, bumbu halus (kelapa sangrai, cabai merah, kencur, jahe, merica, garam, gula pasir). Jakarta', 1),
+	(13, 1, 'Jojorong', 7, '1', 1, 'Kue jojorong banyak yang ilang seperti kue purti malu. Bentuk kuenya yang unik dengan teksturnya yang lembut dan berisi lelehan gula merah. tepung kanji, tepung beras, gula merah, air daun suji, pandan, santan encer, dan garam. Banten.', 1),
+	(14, 1, 'Karedok', 8, '1', 1, 'Sayuran segar yang diiris, dipotong dan dicincang kasar dan dicampurkan dengan saus kacang gurih serta pelengkap sajian karedok. Pembuatannya sangat praktis dan mudah sehingga memungkinkan bagi anda vegetarian untuk menghadirkan karedok ini kapan saja. sayuran (kol, tauge, wortel, timun, daun kemangi, kacang panjang), bumbu kacang. Jawa barat.', 2),
+	(15, 1, 'Ikan Selais Asap', 18, '1', 1, 'Daging ikan selais asap rasanya renyah dan khas. disajikan dengan sambal merah yang pedas. ikan selais, minyak goreng dan bumbu balado. Akit, riau', 1),
+	(18, 1, 'AAAA', 9, '1', 2, 'aaaaaaaaa', 1);
+/*!40000 ALTER TABLE `kuliner` ENABLE KEYS */;
+
+-- Dumping structure for table alot.migration
+CREATE TABLE IF NOT EXISTS `migration` (
+  `version` varchar(180) NOT NULL,
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.migration: ~12 rows (approximately)
+/*!40000 ALTER TABLE `migration` DISABLE KEYS */;
+INSERT INTO `migration` (`version`, `apply_time`) VALUES
+	('m140209_132017_init', 1532193397),
+	('m140403_174025_create_account_table', 1532193399),
+	('m140504_113157_update_tables', 1532193404),
+	('m140504_130429_create_token_table', 1532193406),
+	('m140830_171933_fix_ip_field', 1532193407),
+	('m140830_172703_change_account_table_name', 1532193407),
+	('m141222_110026_update_ip_field', 1532193408),
+	('m141222_135246_alter_username_length', 1532193409),
+	('m150614_103145_update_social_account_table', 1532193412),
+	('m150623_212711_fix_username_notnull', 1532193412),
+	('m151218_234654_add_timezone_to_profile', 1532193413),
+	('m160929_103127_add_last_login_at_to_user_table', 1532193413);
+/*!40000 ALTER TABLE `migration` ENABLE KEYS */;
+
+-- Dumping structure for table alot.profile
+CREATE TABLE IF NOT EXISTS `profile` (
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `public_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gravatar_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gravatar_id` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `website` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `bio` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `timezone` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `fk_user_profile` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table alot.profile: ~0 rows (approximately)
+/*!40000 ALTER TABLE `profile` DISABLE KEYS */;
+INSERT INTO `profile` (`user_id`, `name`, `public_email`, `gravatar_email`, `gravatar_id`, `location`, `website`, `bio`, `timezone`) VALUES
+	(1, 'Rizky Arinugraha', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+/*!40000 ALTER TABLE `profile` ENABLE KEYS */;
+
+-- Dumping structure for table alot.provinsi
+CREATE TABLE IF NOT EXISTS `provinsi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(45) NOT NULL,
+  `kode` varchar(45) DEFAULT NULL,
+  `foto` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.provinsi: ~34 rows (approximately)
+/*!40000 ALTER TABLE `provinsi` DISABLE KEYS */;
+INSERT INTO `provinsi` (`id`, `nama`, `kode`, `foto`) VALUES
+	(1, 'ACEH', '11', '219bc28001df28cbe483ae735f0f1e31.jpg'),
+	(2, 'SUMATERA UTARA', '12', ''),
+	(3, 'SUMATERA BARAT', '13', ''),
+	(4, 'RIAU', '14', ''),
+	(5, 'JAMBI', '15', ''),
+	(6, 'SUMATERA SELATAN', '16', ''),
+	(7, 'BENGKULU', '17', ''),
+	(8, 'LAMPUNG', '18', ''),
+	(9, 'KEPULAUAN BANGKA BELITUNG', '19', ''),
+	(10, 'KEPULAUAN RIAU', '21', ''),
+	(11, 'DKI JAKARTA', '31', ''),
+	(12, 'JAWA BARAT', '32', ''),
+	(13, 'JAWA TENGAH', '33', ''),
+	(14, 'DI YOGYAKARTA', '34', ''),
+	(15, 'JAWA TIMUR', '35', ''),
+	(16, 'BANTEN', '36', ''),
+	(17, 'BALI', '51', ''),
+	(18, 'NUSA TENGGARA BARAT', '52', ''),
+	(19, 'NUSA TENGGARA TIMUR', '53', ''),
+	(20, 'KALIMANTAN BARAT', '61', ''),
+	(21, 'KALIMANTAN TENGAH', '62', ''),
+	(22, 'KALIMANTAN SELATAN', '63', ''),
+	(23, 'KALIMANTAN TIMUR', '64', ''),
+	(24, 'KALIMANTAN UTARA', '65', ''),
+	(25, 'SULAWESI UTARA', '71', ''),
+	(26, 'SULAWESI TENGAH', '72', ''),
+	(27, 'SULAWESI SELATAN', '73', ''),
+	(28, 'SULAWESI TENGGARA', '74', ''),
+	(29, 'GORONTALO', '75', ''),
+	(30, 'SULAWESI BARAT', '76', ''),
+	(31, 'MALUKU', '81', ''),
+	(32, 'MALUKU UTARA', '82', ''),
+	(33, 'PAPUA BARAT', '91', ''),
+	(34, 'PAPUA', '94', '');
+/*!40000 ALTER TABLE `provinsi` ENABLE KEYS */;
+
+-- Dumping structure for table alot.rating_kuliner
+CREATE TABLE IF NOT EXISTS `rating_kuliner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `rating` float DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
+  `kuliner_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_rating_kuliner_user1_idx` (`user_id`),
+  KEY `fk_rating_kuliner_kuliner1_idx` (`kuliner_id`),
+  CONSTRAINT `fk_rating_kuliner_kuliner1` FOREIGN KEY (`kuliner_id`) REFERENCES `kuliner` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_rating_kuliner_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.rating_kuliner: ~0 rows (approximately)
+/*!40000 ALTER TABLE `rating_kuliner` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rating_kuliner` ENABLE KEYS */;
+
+-- Dumping structure for table alot.social_account
+CREATE TABLE IF NOT EXISTS `social_account` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `provider` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `data` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `code` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` int(11) DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `account_unique` (`provider`,`client_id`),
+  UNIQUE KEY `account_unique_code` (`code`),
+  KEY `fk_user_account` (`user_id`),
+  CONSTRAINT `fk_user_account` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table alot.social_account: ~0 rows (approximately)
+/*!40000 ALTER TABLE `social_account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `social_account` ENABLE KEYS */;
+
+-- Dumping structure for table alot.store
+CREATE TABLE IF NOT EXISTS `store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `nama` varchar(45) DEFAULT NULL,
+  `telepon` varchar(45) DEFAULT NULL,
+  `alamat` text DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `lokasi` text DEFAULT NULL,
+  `foto` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_store_user1_idx` (`user_id`),
+  CONSTRAINT `fk_store_user1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table alot.store: ~11 rows (approximately)
+/*!40000 ALTER TABLE `store` DISABLE KEYS */;
+INSERT INTO `store` (`id`, `user_id`, `nama`, `telepon`, `alamat`, `harga`, `lokasi`, `foto`) VALUES
+	(1, 1, 'Harum Manis', '+6221 57941727', 'Apartemen Pavilion, Pavilion Apartment, Jalan K.H. Mas Mansyur Kav. 24, Jakarta Pusat', 25000, NULL, ''),
+	(2, 1, 'Dapur Solo', '+6221 7222311', 'Jalan Panglima Polim Raya No.1, Kebayoran Baru, Jakarta Selatan', 25000, NULL, ''),
+	(3, 1, 'Marco Padang Grill', '+6221 5203221', 'Setiabudi One, Setiabudi One, 1st Floor, Unit B 212 - 216, Jalan H.R. Rasuna Said, Kav. 62, Kuningan, Jakarta Selatan', 25000, NULL, ''),
+	(4, 1, 'Pondok Wong Palembang', '+6221 3865758', 'Jalan Veteran I No.12, Gambir, Jakarta Pusat', 25000, NULL, ''),
+	(5, 1, 'Bebek Bengil', '+6221 3918016', 'The Ubud Building, Jalan H. Agus Salim No. 132, Jakarta Pusat', 30000, NULL, ''),
+	(6, 1, 'Mbah Jingkrak', '+6221 5252605', 'Jalan Setiabudi Tengah No. 11, Setiabudi, Jakarta Selatan', 30000, NULL, ''),
+	(7, 1, 'Dapur Sunda', '+6221 5227558', 'Setiabudi One Building Lt. 1 No. A 202-B 203, Jalan H.R Rasuna Said Kav. 62, Jakarta Selatan', 30000, NULL, ''),
+	(8, 1, 'Puang Oca', '+6221 57853680', 'Komplek Lapangan Tembak, Jalan Gelora, Jakarta Pusat', 30000, NULL, ''),
+	(9, 1, 'Lara Djonggrang', '+6221 3153252', 'Jalan Teuku Cik Ditiro No.4, RT.3/RW.2, Gondangdia, Menteng, Jakarta Pusat', 30000, '-6.354075945731032,106.84439655035408', ''),
+	(11, 1, 'Gubuk Makan Mang Engking', '021-777825025', 'Jl. Lingkar Utara', 100000, '-6.348701801844414,106.83139320104988', 'b2bca63ccdb2288390be7667c6310819.png');
+/*!40000 ALTER TABLE `store` ENABLE KEYS */;
+
+-- Dumping structure for table alot.token
+CREATE TABLE IF NOT EXISTS `token` (
+  `user_id` int(11) NOT NULL,
+  `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `created_at` int(11) NOT NULL,
+  `type` smallint(6) NOT NULL,
+  UNIQUE KEY `token_unique` (`user_id`,`code`,`type`),
+  CONSTRAINT `fk_user_token` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table alot.token: ~0 rows (approximately)
+/*!40000 ALTER TABLE `token` DISABLE KEYS */;
+INSERT INTO `token` (`user_id`, `code`, `created_at`, `type`) VALUES
+	(1, 'oV5LtOAjz3r19lzh4DZdFHG0zuFmnL5X', 1532193500, 0);
+/*!40000 ALTER TABLE `token` ENABLE KEYS */;
+
+-- Dumping structure for table alot.user
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password_hash` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `confirmed_at` int(11) DEFAULT NULL,
+  `unconfirmed_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `blocked_at` int(11) DEFAULT NULL,
+  `registration_ip` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  `flags` int(11) NOT NULL DEFAULT 0,
+  `last_login_at` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_unique_username` (`username`),
+  UNIQUE KEY `user_unique_email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table alot.user: ~1 rows (approximately)
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` (`id`, `username`, `email`, `password_hash`, `auth_key`, `confirmed_at`, `unconfirmed_email`, `blocked_at`, `registration_ip`, `created_at`, `updated_at`, `flags`, `last_login_at`) VALUES
+	(1, 'ari', 'vpsnode212@gmail.com', '$2y$12$kgR/xHS3KMPgbxTtUe3od.6Rjt//bUc9dKR9oYgquBUdz3d3M9mau', 'Ef3CtElCNZpQtubx9Uednn1C_bkikfzj', NULL, NULL, NULL, '::1', 1532193500, 1532193500, 0, 1532321790);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

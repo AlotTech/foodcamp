@@ -12,11 +12,12 @@ class CustomAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-      //  'css/site.css',
+      //'css/site.css',
         'start/vendor/bootstrap/css/bootstrap.min.css',
         'start/vendor/font-awesome/css/font-awesome.min.css',
         'start/vendor/simple-line-icons/css/simple-line-icons.css',
-        'start/css/landing-page.min.css'
+        'start/css/landing-page.css',
+        'start/css/infobox.css'
     ];
     public $js = [
         'start/vendor/jquery/jquery.min.js',
@@ -24,6 +25,6 @@ class CustomAsset extends AssetBundle
     ];
     public $depends = [
         'yii\web\YiiAsset',
-      //  'yii\bootstrap\BootstrapAsset',
+      //'yii\bootstrap\BootstrapAsset',
     ];
 }

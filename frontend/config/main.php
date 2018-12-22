@@ -11,30 +11,35 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
-    'components' => [
-    'view' => [
-         'theme' => [
-             'pathMap' => [
-                '@app/views' => '@vendor/almasaeed2010/adminlte/pages',
-            
-             ],
-
-         ],
-        ],
-
-        'request' => [
-            'csrfParam' => '_csrf-frontend',
-        ],
-
-    'assetManager' => [
-        'bundles' => [
-            'dmstr\web\AdminLteAsset' => [
-                'skin' => 'skin-blue-light',
-                
-            ],
+    'modules'=>[
+         'gridview' => [
+            'class' => 'kartik\grid\Module',
         ],
     ],
-      
+    'homeUrl' => '/foodcamp',
+    'components' => [
+        'geoip2' => [
+            'class' => 'overals\GeoIP2\GeoIP2',
+            'mmdb' => '@frontend/components/GeoIP2/GeoLite2-City.mmdb',
+            'lng' => 'en', // available languages = 'de', 'en', 'es', 'ja', 'ru', 'zh-CN'
+        ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@vendor/almasaeed2010/adminlte/pages',
+
+                ],
+
+            ],
+        ],
+        'request' => [
+            'baseUrl' => '/foodcamp',
+            'csrfParam' => '_csrf-frontend',
+        ],
+        'assetManager' => [
+            'bundles' => [
+            ],
+        ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
@@ -51,14 +56,19 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        
+        'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'backend/web/uploads/',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
+
     ],
     'params' => $params,
 ];

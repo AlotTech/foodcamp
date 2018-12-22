@@ -18,8 +18,15 @@
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "warrence/yii2-kartikgii": "dev-master",
+        "kartik-v/yii2-field-range": "dev-master",
         "dmstr/yii2-adminlte-asset": "^2.1",
-        "dektrium/yii2-user": "^0.9.14"
+        "dektrium/yii2-user": "^0.9.14",
+        "kidzen/yii2-dynamicform": "*",
+        "pigochu/yii2-jquery-locationpicker": ">=0.2.0",
+        "2amigos/yii2-ckeditor-widget" : "~2.1",
+        "2amigos/yii2-google-maps-library": "*",
+        "overals/yii2-geoip2": "~1.0.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

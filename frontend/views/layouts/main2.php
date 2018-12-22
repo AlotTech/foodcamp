@@ -5,16 +5,16 @@
 
 //AppAsset::register($this);
 
-use backend\assets\AppAsset;
-use frontend\assets\AdminLtePluginAsset;
+use frontend\assets\AppAsset;
+//use frontend\assets\AdminLtePluginAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-AdminLtePluginAsset::register($this);
-
+//AdminLtePluginAsset::register($this);
+AppAsset::register($this);
    ?>
 
 <?php $this->beginPage() ?>
@@ -28,21 +28,23 @@ AdminLtePluginAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="<?= \dmstr\helpers\AdminLteHelper::skinClass() ?>">
+<body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+
      <?= $this->render(
             'header.php'
         ) ?>
-<br>
-    <div class="container">
+
         
+        <div class="container">
         <?= $content ?>
-    </div>
-</div>
+       
+  </div>
 
 
+
+         
 
 <?php $this->endBody() ?>
 </body>

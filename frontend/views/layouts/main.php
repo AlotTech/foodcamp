@@ -5,14 +5,14 @@
 
 //AppAsset::register($this);
 
-use frontend\assets\CustomAsset;
+use frontend\assets\AppAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
-CustomAsset::register($this);
+AppAsset::register($this);
 
    ?>
 
@@ -39,9 +39,6 @@ CustomAsset::register($this);
 
 
 
-          <?= $this->render(
-            'footers.php'
-        ) ?>
 
 <?php $this->endBody() ?>
 </body>
